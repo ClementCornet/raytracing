@@ -1,7 +1,26 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+#![allow(unused_imports)]
+
+mod vec3;
+use vec3::*;
+
+mod color;
+use color::*;
 
 fn main() {
-    // Image
+    //let mut test = Vec3::new(2.0,1.2,5.7);
+    //let test2 = Vec3::new(3.0,2.2,6.7);
+//
+    //test += test2;
+    //test *= 2.0;
+//
+    //println!("{:?}", unit_vector(&test));
 
+    test_ppm();
+}
+
+fn test_ppm() {
     const IMAGE_WIDTH: u32 = 256;
     const IMAGE_HEIGHT: u32 = 256;
 
@@ -13,13 +32,9 @@ fn main() {
             let g: f32 = j as f32 / (IMAGE_HEIGHT - 1) as f32;
             let b: f32 = 0.25;
 
-            let ir = (255.999*r) as u32;
-            let ig = (255.999*g) as u32;
-            let ib = (255.999*b) as u32;
-
-            println!("{} {} {}",ir,ig,ib);
+            let pixel_color =  Color::new(r,g,b);
+            write_color(pixel_color);
         }
     }
     eprintln!("Done");
-
 }

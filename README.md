@@ -5,15 +5,12 @@ Using https://raytracing.github.io/books/RayTracingInOneWeekend.html as a guidel
 
 ## Current Progress
 
-<details>
-    <summary>Output an image</summary>
+Output an image :
+- Use the PPM file format
 
-    - Use PPM file format
+Vec3 struct:
+- Operator Overloading, traits
+- Simple functions for 3D vectors
 
-</details>
-
-<details>
-    <summary>Vec3 class</summary>
-    - tbc
-
-</details>
+Rays, a Simple Camera, and Background:
+- tbc
