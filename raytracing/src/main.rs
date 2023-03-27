@@ -8,16 +8,11 @@ use vec3::*;
 mod color;
 use color::*;
 
-fn main() {
-    //let mut test = Vec3::new(2.0,1.2,5.7);
-    //let test2 = Vec3::new(3.0,2.2,6.7);
-//
-    //test += test2;
-    //test *= 2.0;
-//
-    //println!("{:?}", unit_vector(&test));
+mod ray;
+use ray::*;
 
-    test_ppm();
+fn main() {
+    blue_white_gradient();
 }
 
 fn test_ppm() {
@@ -33,6 +28,44 @@ fn test_ppm() {
             let b: f32 = 0.25;
 
             let pixel_color =  Color::new(r,g,b);
+            write_color(pixel_color);
+        }
+    }
+    eprintln!("Done");
+}
+
+fn ray_color(r: &Ray) -> Color{
+    let unit_direction = unit_vector(&r.dir);
+    let t = 0.5 * (unit_direction.y + 1.0);
+    return (1.0 - t) * Color::new(1.0,1.0,1.0) + t * Color::new(0.5, 0.7, 1.0);
+}
+
+fn blue_white_gradient(){
+    // Image
+    const ASPECT_RATIO: f32 = 16.0 / 9.0;
+    const IMAGE_WIDTH: u32 = 400;
+    const IMAGE_HEIGHT:u32 = (IMAGE_WIDTH as f32 / ASPECT_RATIO) as u32;
+
+    // Camera
+    let viewport_height: f32 = 2.0;
+    let viewport_width: f32 = ASPECT_RATIO * viewport_height;
+    let focal_length: f32 = 1.0;
+
+    let origin: Point3 = Point3::new(0.0, 0.0, 0.0);
+    let horizontal: Vec3 = Vec3::new(viewport_width, 0.0, 0.0);
+    let vertical: Vec3 = Vec3::new(0.0, viewport_height, 0.0);
+    let lower_left_corner = origin - horizontal/2.0 - vertical/2.0 - Vec3::new(0.0,0.0,focal_length);
+
+    // Render
+    println!("P3\n{} {}\n255",IMAGE_WIDTH,IMAGE_HEIGHT);
+    for j in (0..IMAGE_HEIGHT).rev(){
+        eprintln!("Scanlines remaining: {}",j); // eprintln! to write to the standard error stream
+        for i in 0..IMAGE_WIDTH{
+            let u: f32 = i as f32 / (IMAGE_WIDTH as f32 - 1.0);
+            let v: f32 = j as f32 / (IMAGE_HEIGHT as f32 - 1.0);
+            let r: Ray = Ray::new(origin, lower_left_corner + u*horizontal + v*vertical - origin);
+
+            let pixel_color =  ray_color(&r);
             write_color(pixel_color);
         }
     }

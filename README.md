@@ -13,4 +13,7 @@ Vec3 struct:
 - Simple functions for 3D vectors
 
 Rays, a Simple Camera, and Background:
-- tbc
+- Define Ray struct
+
+Adding a Sphere
+- TBC
