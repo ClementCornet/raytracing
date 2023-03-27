@@ -5,13 +5,13 @@ use crate::vec3::*;
 use crate::hittable::*;
 use crate::ray::*;
 
-struct Sphere {
+pub struct Sphere {
     center: Point3,
     radius: f32
 }
 
 impl Sphere {
-    fn new(cen: Point3, r: f32) -> Sphere{
+    pub fn new(cen: Point3, r: f32) -> Sphere{
         Sphere { center:cen, radius:r }
     }
 }

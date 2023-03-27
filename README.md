@@ -21,3 +21,7 @@ Adding a Sphere
 Surface Normals and Multiple Objects
 - Shading with surface normals
 - Generalization of hittable objects
+- Generalization to worlds with multiple hittable objects (hittable lists)
+
+Antialiasing
+- TBC

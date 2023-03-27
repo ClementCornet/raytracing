@@ -5,21 +5,22 @@ pub struct HittableList{
 }
 
 impl HittableList{
-    fn new() -> HittableList {
+    pub fn new() -> HittableList {
         HittableList { objects: Vec::new() }
     }
 
-    fn clear(&mut self) {
+    pub fn clear(&mut self) {
         self.objects.clear();
     }
 
-    fn add(&mut self, object: Box<dyn Hittable>){
+    pub fn add(&mut self, object: Box<dyn Hittable>){
         self.objects.push(object);
     }
+
 }
 
 impl Hittable for HittableList{
-    fn hit(&self, r: &crate::ray::Ray, t_min: f32, t_max: f32, mut rec: &mut HitRecord) -> bool {
+    fn hit(&self, r: &crate::ray::Ray, t_min: f32, t_max: f32, rec: &mut HitRecord) -> bool {
         let mut temp_rec: HitRecord = HitRecord::blank();
         let mut hit_anything = false;
         let mut closest_so_far = t_max;
