@@ -11,6 +11,15 @@ use color::*;
 mod ray;
 use ray::*;
 
+mod hittable;
+use hittable::*;
+
+mod sphere;
+use sphere::*;
+
+mod hittable_list;
+use hittable_list::*;
+
 fn main() {
     
     blue_white_gradient();
@@ -36,10 +45,12 @@ fn test_ppm() {
 }
 
 fn ray_color(r: &Ray) -> Color{
-    if hit_sphere(&Vec3::new(0.0, 0.0, -1.0), 0.5, &r){
-        return  Color::new(1.0,0.0,0.0);
+    let t = hit_sphere(&Point3::new(0.0, 0.0, -1.0), 0.5, &r);
+    if t > 0.0 {
+        // Normal Vector (existing the sphere)
+        let n: Vec3 = unit_vector(&(r.at(t) - Vec3::new(0.0, 0.0, -1.0)));
+        return 0.5 * Color::new(n.x + 1.0, n.y + 1.0, n.z + 1.0);
     }
-
     let unit_direction = unit_vector(&r.dir);
     let t = 0.5 * (unit_direction.y + 1.0);
     return (1.0 - t) * Color::new(1.0,1.0,1.0) + t * Color::new(0.5, 0.7, 1.0);
@@ -77,12 +88,15 @@ fn blue_white_gradient(){
     eprintln!("Done");
 }
 
-fn hit_sphere(center: &Point3, radius: f32, r: &Ray) -> bool {
-    // Hard code quadractic equation of wether a ray hits a sphere
-    let oc = r.orig - *center;
-    let a = dot(&r.dir, &r.dir);
-    let b = 2.0 * dot(&oc, &r.dir);
-    let c = dot(&oc, &oc) - radius*radius;
-    let discriminant = b*b - 4.0*a*c;
-    return discriminant > 0.0;
+fn hit_sphere(center: &Point3, radius: f32, r: &Ray) -> f32 {
+    
+    let oc = r.orig - *center; // Origin-Center vector
+    let a = r.dir.square_length(); // a b c of quadratic equation, solutions of "Ray hits sphere"
+    let half_b = dot(&oc, &r.dir);
+    let c = oc.square_length() - radius * radius;
+    let discriminant = half_b*half_b - a*c;
+    if discriminant < 0.0 {
+        return -1.0;
+    }
+    return (-half_b - discriminant.sqrt()) / (a); // 1st Intersection
 }

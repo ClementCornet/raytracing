@@ -18,3 +18,6 @@ Rays, a Simple Camera, and Background:
 Adding a Sphere
 - Simple ray traced red sphere, computing wether the ray hits the sphere at all
 
+Surface Normals and Multiple Objects
+- Shading with surface normals
+- Generalization of hittable objects
