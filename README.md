@@ -16,4 +16,5 @@ Rays, a Simple Camera, and Background:
 - Define Ray struct
 
 Adding a Sphere
-- TBC
+- Simple ray traced red sphere, computing wether the ray hits the sphere at all
+

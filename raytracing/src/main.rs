@@ -12,6 +12,7 @@ mod ray;
 use ray::*;
 
 fn main() {
+    
     blue_white_gradient();
 }
 
@@ -19,7 +20,7 @@ fn test_ppm() {
     const IMAGE_WIDTH: u32 = 256;
     const IMAGE_HEIGHT: u32 = 256;
 
-    println!("P3\n{} {}\n255",IMAGE_HEIGHT,IMAGE_WIDTH);
+    println!("P3\n{} {}\n255",IMAGE_WIDTH,IMAGE_HEIGHT);
     for j in (0..IMAGE_HEIGHT).rev(){
         eprintln!("Scanlines remaining: {}",j); // eprintln! to write to the standard error stream
         for i in 0..IMAGE_WIDTH{
@@ -35,6 +36,10 @@ fn test_ppm() {
 }
 
 fn ray_color(r: &Ray) -> Color{
+    if hit_sphere(&Vec3::new(0.0, 0.0, -1.0), 0.5, &r){
+        return  Color::new(1.0,0.0,0.0);
+    }
+
     let unit_direction = unit_vector(&r.dir);
     let t = 0.5 * (unit_direction.y + 1.0);
     return (1.0 - t) * Color::new(1.0,1.0,1.0) + t * Color::new(0.5, 0.7, 1.0);
@@ -70,4 +75,14 @@ fn blue_white_gradient(){
         }
     }
     eprintln!("Done");
+}
+
+fn hit_sphere(center: &Point3, radius: f32, r: &Ray) -> bool {
+    // Hard code quadractic equation of wether a ray hits a sphere
+    let oc = r.orig - *center;
+    let a = dot(&r.dir, &r.dir);
+    let b = 2.0 * dot(&oc, &r.dir);
+    let c = dot(&oc, &oc) - radius*radius;
+    let discriminant = b*b - 4.0*a*c;
+    return discriminant > 0.0;
 }
