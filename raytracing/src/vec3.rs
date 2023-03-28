@@ -2,6 +2,7 @@
 #![allow(unused_variables)]
 
 use std::ops;
+use crate::rtweekend::*;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Vec3{
@@ -16,6 +17,26 @@ impl Vec3 {
     }
     pub fn new(x:f32, y:f32, z:f32) -> Vec3{
         Vec3 {x:x,y:y,z:z}
+    }
+    pub fn rand_vec3(min: f32, max: f32) -> Vec3{
+        Vec3::new(rand_double(min, max), rand_double(min, max), rand_double(min, max))
+    }
+    pub fn rand_in_unit_sphere() -> Vec3{
+        loop {
+            let p = Vec3::rand_vec3(-1.0, 1.0); // Might be in unary cube but not unary sphere
+            if p.square_length() >= 1.0 { continue;}
+            return p;
+        }
+    }
+    pub fn rand_unit_vector() -> Vec3 {
+        unit_vector(&Vec3::rand_in_unit_sphere())
+    }
+    pub fn rand_in_hemisphere(normal: &Vec3) -> Vec3 {
+        let in_unit_sphere = Vec3::rand_in_unit_sphere();
+        if dot(&in_unit_sphere,normal) > 0.0 {
+            return in_unit_sphere;
+        }
+        return  -in_unit_sphere;
     }
 }
 

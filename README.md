@@ -24,4 +24,9 @@ Surface Normals and Multiple Objects
 - Generalization to worlds with multiple hittable objects (hittable lists)
 
 Antialiasing
-- TBC
+- Randomly averaing nearby pixels
+
+Diffuse Materials
+- Bouncing rays
+- Gamma Correction
+- Lambertian Reflection / Hemispheral Scattering
