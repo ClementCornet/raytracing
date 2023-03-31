@@ -41,3 +41,7 @@ Dielectrics
 
 Movable Camera
 - Lookfrom, Lookat, vup (vector up), and field of view
+
+Defocus Blur
+- Approximating a thin lens (with a focal distance)
+
