@@ -38,3 +38,6 @@ Metal
 Dielectrics
 - Refraction
 - Hollow glass sphere
+
+Movable Camera
+- Lookfrom, Lookat, vup (vector up), and field of view

@@ -40,20 +40,25 @@ fn main() {
     const MAX_DEPTH: u32 = 50;
 
     // World
+    let r: f32 = (PI/4.0).cos();
     let mut world = HittableList::new();
+
     let material_ground = Material::new_lambertian(Color::new(0.8,0.8,0.0));
     let material_center = Material::new_lambertian(Color::new(0.1, 0.2, 0.5));
     let material_left = Material::new_dielectric(1.5);
     let material_right = Material::new_metal(Color::new(0.8,0.6,0.2),0.0);
-
+//
     world.add(Box::new(Sphere::new(Point3::new(0.0,-100.5,-1.0), 100.0, material_ground)));
     world.add(Box::new(Sphere::new(Point3::new(0.0,0.0,-1.0), 0.5, material_center)));
     world.add(Box::new(Sphere::new(Point3::new(-1.0,0.0,-1.0), 0.5, material_left)));
-    world.add(Box::new(Sphere::new(Point3::new(-1.0,0.0,-1.0), -0.4, material_left)));
+    world.add(Box::new(Sphere::new(Point3::new(-1.0,0.0,-1.0), -0.45, material_left)));
     world.add(Box::new(Sphere::new(Point3::new(1.0,0.0,-1.0), 0.5, material_right)));
 
     // Camera
-    let cam = Camera::new();
+    let cam = Camera::new(Point3::new(-2.0,2.0,1.0),
+                                 Point3::new(0.0,0.0,-1.0),
+                                 Vec3::new(0.0, 1.0, 0.0),
+                                20.0, ASPECT_RATIO);
 
     // Render
     println!("P3\n{} {}\n255",IMAGE_WIDTH,IMAGE_HEIGHT);
