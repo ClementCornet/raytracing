@@ -36,4 +36,5 @@ Metal
 - Fuzzed metal
 
 Dielectrics
-- TBC
+- Refraction
+- Hollow glass sphere
