@@ -27,6 +27,10 @@ use rtweekend::*;
 mod camera;
 use camera::*;
 
+mod material;
+use material::*;
+use material::MaterialTypes::*;
+
 fn main() {
     // Image
     const ASPECT_RATIO: f32 = 16.0 / 9.0;
@@ -37,10 +41,15 @@ fn main() {
 
     // World
     let mut world = HittableList::new();
-    HittableList::add(&mut world, Box::new(Sphere::new(Point3::new(0.0,0.0,-1.0), 0.5)));
-    
-    // Background sphere (ground)
-    HittableList::add(&mut world, Box::new(Sphere::new(Point3::new(0.0,-100.5,-1.0), 100.0)));
+    let material_ground = Material::new_lambertian(Color::new(0.8,0.8,0.0));
+    let material_center = Material::new_lambertian(Color::new(0.7,0.3,0.3));
+    let material_left = Material::new_metal(Color::new(0.8,0.8,0.8),0.3);
+    let material_right = Material::new_metal(Color::new(0.8,0.6,0.2),1.0);
+
+    world.add(Box::new(Sphere::new(Point3::new(0.0,-100.5,-1.0), 100.0, material_ground)));
+    world.add(Box::new(Sphere::new(Point3::new(0.0,0.0,-1.0), 0.5, material_center)));
+    world.add(Box::new(Sphere::new(Point3::new(-1.0,0.0,-1.0), 0.5, material_left)));
+    world.add(Box::new(Sphere::new(Point3::new(1.0,0.0,-1.0), 0.5, material_right)));
 
     // Camera
     let cam = Camera::new();
@@ -74,10 +83,17 @@ fn ray_color(r: &Ray, world: &HittableList, depth: u32) -> Color{
 
     let mut rec: HitRecord = HitRecord::blank();
     if world.hit(r, 0.001, INFINITY, &mut rec){
-        let target: Point3 = rec.p + rec.normal + Vec3::rand_unit_vector(); // Lambertian Reflection
-        //let target: Point3 = rec.p + Vec3::rand_in_hemisphere(&rec.normal); // Hemispheral Scattering
-        return 0.5 * ray_color(&Ray::new(rec.p, target-rec.p), world, depth-1) // recursive : diffusion
-        //return 0.5 * (rec.normal + Color::new(1.0,1.0,1.0));
+        //let target: Point3 = rec.p + rec.normal + Vec3::rand_unit_vector(); // Lambertian Reflection
+        ////let target: Point3 = rec.p + Vec3::rand_in_hemisphere(&rec.normal); // Hemispheral Scattering
+        //return 0.5 * ray_color(&Ray::new(rec.p, target-rec.p), world, depth-1) // recursive : diffusion
+        ////return 0.5 * (rec.normal + Color::new(1.0,1.0,1.0));
+
+        let mut scattered = Ray::new(Point3::zeros(), Vec3::zeros()); //dummy init
+        let mut attenuation= Color::new(0.0,0.0,0.0); //dummy init
+        if rec.mat.clone().scatter(r, &mut rec, &mut attenuation, &mut scattered){
+            return attenuation * ray_color(&scattered, &world, depth-1);
+        }
+        return Color::new(0.0,0.0,0.0); // Return black
     }
 
     let unit_direction = unit_vector(&r.dir);

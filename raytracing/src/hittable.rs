@@ -3,19 +3,22 @@
 
 use crate::vec3::*;
 use crate::ray::*;
+use crate::material::*;
 
-#[derive(Clone, Copy)]
 pub struct HitRecord {
     pub p: Point3,
     pub normal: Vec3,
+    pub mat: Material,
     pub t: f32,
     pub front_face: bool
 }
 
+
+
 impl HitRecord {
     // Blank, for temp hit records
     pub fn blank() -> HitRecord {
-        HitRecord { p: Vec3::zeros(), normal: Vec3::zeros(), t: -1.0, front_face: false }
+        HitRecord { p: Vec3::zeros(), normal: Vec3::zeros(), t: -1.0, front_face: false ,mat: Material::blank()}
     }
 }
 

@@ -30,3 +30,10 @@ Diffuse Materials
 - Bouncing rays
 - Gamma Correction
 - Lambertian Reflection / Hemispheral Scattering
+
+Metal
+- Separation between different types of materials
+- Fuzzed metal
+
+Dielectrics
+- TBC

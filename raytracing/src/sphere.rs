@@ -4,15 +4,18 @@
 use crate::vec3::*;
 use crate::hittable::*;
 use crate::ray::*;
+use crate::material::*;
 
 pub struct Sphere {
     center: Point3,
-    radius: f32
+    radius: f32,
+    mat: Material
 }
 
+
 impl Sphere {
-    pub fn new(cen: Point3, r: f32) -> Sphere{
-        Sphere { center:cen, radius:r }
+    pub fn new(cen: Point3, r: f32, m: Material) -> Sphere{
+        Sphere { center:cen, radius:r ,mat: m}
     }
 }
 
@@ -37,11 +40,12 @@ impl Hittable for Sphere {
                 return false
             }
         }
-
+        //let col = *(self.mat).albedo;
         rec.t = root;
         rec.p = r.at(rec.t);
         let outward_normal = (rec.p - self.center) / self.radius;
         rec.set_face_normal(r, &outward_normal);
+        rec.mat = self.mat;
 
         return true
     }

@@ -38,6 +38,15 @@ impl Vec3 {
         }
         return  -in_unit_sphere;
     }
+    pub fn near_zero(v: Vec3) -> bool {
+        let s: f32 = 1e-8;
+        v.x.abs() < s && v.y.abs() < s && v.z.abs() < s
+    }
+    pub fn reflect(v: &Vec3, n: &Vec3) -> Vec3 {
+        let d = 2.0*dot(v,n);
+        *v - *n * d
+    }
+
 }
 
 impl ops::Neg for Vec3 {
@@ -140,6 +149,17 @@ impl ops::Sub<Vec3> for Vec3{
             x: self.x - rhs.x,
             y: self.y - rhs.y,
             z: self.z - rhs.z
+        }
+    }
+}
+
+impl ops::Mul<Vec3> for Vec3{
+    type Output = Vec3;
+    fn mul(self, rhs: Vec3) -> Self::Output {
+        Vec3 {
+            x: self.x * rhs.x,
+            y: self.y * rhs.y,
+            z: self.z * rhs.z,
         }
     }
 }
