@@ -19,6 +19,8 @@ impl HittableList{
 
 }
 
+unsafe impl Sync for HittableList {}
+
 impl Hittable for HittableList{
     fn hit(&self, r: &crate::ray::Ray, t_min: f32, t_max: f32, rec: &mut HitRecord) -> bool {
         let mut temp_rec: HitRecord = HitRecord::blank();
